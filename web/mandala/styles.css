@@ -79,11 +79,24 @@ body {
   touch-action: manipulation;
 }
 
+.layout-reference {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  opacity: 0.34;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: saturate(0.8) contrast(0.9);
+}
+
 .mandala-backdrop {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  opacity: 0.76;
   user-select: none;
 }
 
@@ -95,28 +108,94 @@ body {
   fill: url(#centerGlow);
 }
 
-.rim-segment {
+.rim-band {
   fill: none;
-  stroke-width: 4.8;
   stroke-linecap: butt;
+  stroke-width: 4.8;
+  transform: rotate(-90deg);
+  transform-box: fill-box;
+  transform-origin: center;
   vector-effect: non-scaling-stroke;
 }
 
-.rim-segment--east {
-  stroke: #20bdd0;
+.rim-band--01 {
+  stroke: #1b70d8;
+  stroke-dasharray: 28 332;
+  stroke-dashoffset: 2;
 }
 
-.rim-segment--south {
-  stroke: #f0bd18;
+.rim-band--02 {
+  stroke: #f2a51c;
+  stroke-dasharray: 34 326;
+  stroke-dashoffset: -31;
 }
 
-.rim-segment--west {
-  stroke: #d22f82;
+.rim-band--03 {
+  stroke: #31c1c9;
+  stroke-dasharray: 42 318;
+  stroke-dashoffset: -72;
 }
 
-.rim-segment--north {
-  stroke: #f26523;
-  stroke-dasharray: 18 9;
+.rim-band--04 {
+  stroke: #d8328f;
+  stroke-dasharray: 31 329;
+  stroke-dashoffset: -119;
+}
+
+.rim-band--05 {
+  stroke: #2abbd0;
+  stroke-dasharray: 29 331;
+  stroke-dashoffset: -156;
+}
+
+.rim-band--06 {
+  stroke: #f0b51e;
+  stroke-dasharray: 37 323;
+  stroke-dashoffset: -190;
+}
+
+.rim-band--07 {
+  stroke: #ee5b22;
+  stroke-dasharray: 30 330;
+  stroke-dashoffset: -232;
+}
+
+.rim-band--08 {
+  stroke: #1770d2;
+  stroke-dasharray: 25 335;
+  stroke-dashoffset: -268;
+}
+
+.rim-band--09 {
+  stroke: #d82e8c;
+  stroke-dasharray: 34 326;
+  stroke-dashoffset: -299;
+}
+
+.rim-band--10 {
+  stroke: #f2b51e;
+  stroke-dasharray: 26 334;
+  stroke-dashoffset: -338;
+}
+
+.rim-band--11 {
+  stroke: #1fb8ca;
+  stroke-dasharray: 21 339;
+  stroke-dashoffset: -367;
+}
+
+.rim-band--12 {
+  stroke: #ef5a22;
+  stroke-dasharray: 22 338;
+  stroke-dashoffset: -392;
+}
+
+.backdrop-rim .rim-band:nth-child(even) {
+  stroke-width: 5.15;
+}
+
+.backdrop-rim .rim-band:nth-child(3n) {
+  stroke-width: 4.35;
 }
 
 .backdrop-outer-water {
