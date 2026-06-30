@@ -577,6 +577,9 @@ function setActiveVector(item) {
   renderActiveRadiance(item);
   const node = vectorItemNodes.get(item.id);
   if (!node) return;
+  if (radianceLayer) {
+    mandalaSvg.appendChild(radianceLayer);
+  }
   node.classList.add("is-active");
   mandalaSvg.appendChild(node);
 }

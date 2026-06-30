@@ -362,15 +362,18 @@ body {
 }
 
 .stage.has-active .mandala-item.is-active .mandala-circle {
-  fill: rgba(255, 252, 190, 0.98);
-  stroke-width: 3.8;
-  stroke: rgba(255, 58, 40, 0.98);
+  fill: #fff8b8;
+  stroke-width: 4.2;
+  stroke: #ff3a28;
+  filter:
+    drop-shadow(0 0 2px rgba(255, 255, 245, 1))
+    drop-shadow(0 0 8px rgba(255, 214, 77, 0.92));
 }
 
 .stage.has-active .mandala-item.is-active .mandala-text {
   fill: #080d18;
-  stroke: rgba(255, 255, 246, 0.92);
-  stroke-width: 0.54;
+  stroke: #fffff6;
+  stroke-width: 0.68;
 }
 
 .stage.has-active .mandala-item.is-active .mandala-source-ring {
