@@ -15,6 +15,7 @@ const size = {
   center: "clamp(320px, 38vw, 560px)",
   continent: "clamp(300px, 36vw, 540px)",
   subcontinent: "clamp(260px, 31vw, 460px)",
+  detailImage: "clamp(320px, 38vw, 560px)",
   offering: "clamp(300px, 35vw, 520px)",
   wideOffering: "clamp(360px, 42vw, 620px)",
   jewel: "clamp(300px, 35vw, 520px)",
@@ -649,7 +650,7 @@ function setActiveItem(item) {
   }
 
   detailCaption.textContent = `${item.id} ${item.name}`;
-  detail.style.setProperty("--detail-width", textMode ? "clamp(180px, 24vw, 320px)" : item.width);
+  detail.style.setProperty("--detail-width", textMode ? "clamp(180px, 24vw, 320px)" : size.detailImage);
   setActiveVector(item);
   updateActiveGeometry();
   detail.style.left = `${activeStartPoint.x}px`;
