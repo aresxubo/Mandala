@@ -170,6 +170,7 @@ const statusIcon = document.querySelector("#statusIcon");
 const statusTitle = document.querySelector("#statusTitle");
 const statusMeta = document.querySelector("#statusMeta");
 const vectorItemNodes = new Map();
+const imageCache = new Map();
 let radianceLayer = null;
 
 let playing = false;
@@ -185,9 +186,11 @@ let activeFinalPoint = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 let statusTimer = 0;
 let pointerState = null;
 let ignoreNextDblClickUntil = 0;
+let imageLoadToken = 0;
 
 const enterMs = 920;
 const exitMs = 560;
+const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 const svgNS = "http://www.w3.org/2000/svg";
 
 function svgEl(tag, attrs = {}, children = []) {
@@ -216,6 +219,16 @@ function renderMandala() {
     renderVectorCircle(group, item);
     mandalaSvg.appendChild(group);
     vectorItemNodes.set(item.id, group);
+  });
+}
+
+function preloadDetailImages() {
+  items.forEach((item) => {
+    if (!item.src) return;
+    const image = new Image();
+    image.decoding = "async";
+    image.src = item.src;
+    imageCache.set(item.id, image);
   });
 }
 
@@ -390,7 +403,7 @@ function drawBanner(group) {
 
 function savedSeconds() {
   const parsed = Number.parseFloat(readSavedValue());
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 3;
+  return Number.isFinite(parsed) && parsed > 0 ? Math.max(1.2, parsed) : 3;
 }
 
 function readSavedValue() {
@@ -401,8 +414,20 @@ function readSavedValue() {
   }
 }
 
-function holdMs() {
+function cycleMs() {
   return durationSeconds * 1000;
+}
+
+function itemTimings() {
+  const total = Math.max(1200, cycleMs());
+  const enter = Math.min(enterMs, Math.max(520, total * 0.32));
+  const exit = Math.min(exitMs, Math.max(320, total * 0.2));
+  return {
+    total,
+    enter,
+    exit,
+    hold: Math.max(0, total - enter - exit),
+  };
 }
 
 function saveSeconds() {
@@ -414,7 +439,7 @@ function saveSeconds() {
 }
 
 function adjustSeconds(delta) {
-  const next = Math.max(0.5, durationSeconds + delta);
+  const next = Math.max(1.2, durationSeconds + delta);
   durationSeconds = Number(next.toFixed(1));
   saveSeconds();
   showTimeStatus();
@@ -462,8 +487,8 @@ function showPauseStatus(meta = "空格继续") {
 function showTimeStatus() {
   showStatus({
     icon: "秒",
-    title: `每项 ${formatSeconds(durationSeconds)} 秒`,
-    meta: "↑ / ↓",
+    title: `间隔 ${formatSeconds(durationSeconds)} 秒`,
+    meta: "右侧滑动 / ↑↓",
     timeout: 1150,
     type: "time",
   });
@@ -570,6 +595,7 @@ function renderActiveRadiance(item) {
   const group = svgEl("g", {
     transform: `translate(${item.pos.x} ${item.pos.y})`,
   });
+  group.appendChild(svgEl("circle", { class: "mandala-focus-disc", r: radius + 1.45 }));
   group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--inner", r: radius }));
   group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--outer", r: radius }));
   radianceLayer.replaceChildren(group);
@@ -585,17 +611,38 @@ function updateActiveGeometry() {
 
 function setActiveItem(item) {
   currentItem = item;
+  imageLoadToken += 1;
+  const token = imageLoadToken;
   const textMode = item.id <= 13;
   detail.classList.toggle("is-text", textMode);
 
   if (textMode) {
+    detail.classList.remove("is-loading");
     detailImage.removeAttribute("src");
     detailImage.alt = "";
     detailText.textContent = item.name;
   } else {
     detailText.textContent = "";
-    detailImage.src = item.src;
     detailImage.alt = `${item.id} ${item.name}`;
+    detail.classList.add("is-loading");
+    detailImage.src = transparentPixel;
+    const cachedImage = imageCache.get(item.id);
+    const revealImage = () => {
+      if (token !== imageLoadToken) return;
+      detailImage.src = item.src;
+      detail.classList.remove("is-loading");
+      updateActiveGeometry();
+      renderProgress();
+    };
+
+    if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
+      revealImage();
+    } else if (cachedImage) {
+      cachedImage.addEventListener("load", revealImage, { once: true });
+      cachedImage.addEventListener("error", revealImage, { once: true });
+    } else {
+      revealImage();
+    }
   }
 
   detailCaption.textContent = `${item.id} ${item.name}`;
@@ -609,22 +656,22 @@ function setActiveItem(item) {
 
 function renderProgress() {
   if (!currentItem) return;
-  const total = enterMs + holdMs() + exitMs;
-  const exitStart = total - exitMs;
+  const { total, enter, exit } = itemTimings();
+  const exitStart = total - exit;
   let scale = 1;
   let opacity = 1;
   let x = activeFinalPoint.x;
   let y = activeFinalPoint.y;
 
-  if (elapsed < enterMs) {
-    const t = elapsed / enterMs;
+  if (elapsed < enter) {
+    const t = elapsed / enter;
     const moveT = easeOutCubic(t);
     scale = 0.06 + 0.94 * moveT;
     opacity = Math.min(1, t * 1.4);
     x = activeStartPoint.x + (activeFinalPoint.x - activeStartPoint.x) * moveT;
     y = activeStartPoint.y + (activeFinalPoint.y - activeStartPoint.y) * moveT;
   } else if (elapsed > exitStart) {
-    const t = (elapsed - exitStart) / exitMs;
+    const t = (elapsed - exitStart) / exit;
     scale = 1 - 0.08 * easeInCubic(t);
     opacity = 1 - t;
   } else {
@@ -661,7 +708,7 @@ function tick(now) {
   if (!paused) {
     elapsed += now - lastFrame;
     renderProgress();
-    if (elapsed >= enterMs + holdMs() + exitMs) {
+    if (elapsed >= itemTimings().total) {
       currentIndex += 1;
       if (currentIndex >= items.length) {
         pauseAtCycleEnd();
@@ -860,6 +907,7 @@ function handleKeydown(event) {
   }
 }
 
+preloadDetailImages();
 renderMandala();
 showPauseStatus("双击/空格开始");
 window.addEventListener("pointerdown", beginPointer, { passive: false });
