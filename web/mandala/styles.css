@@ -506,8 +506,8 @@ body {
 
 .detail img {
   display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  width: auto;
+  max-width: 100%;
   max-height: min(68vh, 680px);
   height: auto;
   object-fit: contain;
