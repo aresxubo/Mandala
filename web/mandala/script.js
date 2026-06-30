@@ -170,9 +170,10 @@ const statusIcon = document.querySelector("#statusIcon");
 const statusTitle = document.querySelector("#statusTitle");
 const statusMeta = document.querySelector("#statusMeta");
 const vectorItemNodes = new Map();
+let radianceLayer = null;
 
 let playing = false;
-let paused = false;
+let paused = true;
 let currentIndex = 0;
 let elapsed = 0;
 let lastFrame = 0;
@@ -203,6 +204,8 @@ function svgEl(tag, attrs = {}, children = []) {
 function renderMandala() {
   mandalaSvg.replaceChildren();
   vectorItemNodes.clear();
+  radianceLayer = svgEl("g", { class: "mandala-active-radiance", "aria-hidden": "true" });
+  mandalaSvg.appendChild(radianceLayer);
 
   items.forEach((item) => {
     const group = svgEl("g", {
@@ -236,8 +239,6 @@ function vectorRadius(id) {
 
 function renderVectorCircle(group, item) {
   const radius = vectorRadius(item.id);
-  group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--inner", r: radius + 0.95 }));
-  group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--outer", r: radius + 0.95 }));
   group.appendChild(svgEl("circle", { class: "mandala-source-ring", r: radius + 0.9 }));
   group.appendChild(svgEl("circle", { class: "mandala-circle", r: radius }));
   const text = svgEl("text", {
@@ -548,6 +549,7 @@ function renderConnector(center, opacity, scale) {
 function setActiveVector(item) {
   stage.classList.add("has-active");
   vectorItemNodes.forEach((node) => node.classList.remove("is-active"));
+  renderActiveRadiance(item);
   const node = vectorItemNodes.get(item.id);
   if (!node) return;
   node.classList.add("is-active");
@@ -557,6 +559,20 @@ function setActiveVector(item) {
 function clearActiveVector() {
   stage.classList.remove("has-active");
   vectorItemNodes.forEach((node) => node.classList.remove("is-active"));
+  if (radianceLayer) {
+    radianceLayer.replaceChildren();
+  }
+}
+
+function renderActiveRadiance(item) {
+  if (!radianceLayer) return;
+  const radius = vectorRadius(item.id) + 0.95;
+  const group = svgEl("g", {
+    transform: `translate(${item.pos.x} ${item.pos.y})`,
+  });
+  group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--inner", r: radius }));
+  group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--outer", r: radius }));
+  radianceLayer.replaceChildren(group);
 }
 
 function updateActiveGeometry() {
@@ -612,8 +628,7 @@ function renderProgress() {
     scale = 1 - 0.08 * easeInCubic(t);
     opacity = 1 - t;
   } else {
-    const holdT = (elapsed - enterMs) / Math.max(1, holdMs());
-    scale = 1 + 0.018 * Math.sin(holdT * Math.PI);
+    scale = 1;
   }
 
   detail.style.left = `${x}px`;
@@ -846,6 +861,7 @@ function handleKeydown(event) {
 }
 
 renderMandala();
+showPauseStatus("双击/空格开始");
 window.addEventListener("pointerdown", beginPointer, { passive: false });
 window.addEventListener("pointermove", movePointer, { passive: false });
 window.addEventListener("pointerup", endPointer, { passive: false });
