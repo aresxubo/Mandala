@@ -173,6 +173,7 @@ const statusMeta = document.querySelector("#statusMeta");
 const vectorItemNodes = new Map();
 const imageCache = new Map();
 let radianceLayer = null;
+let activeCapLayer = null;
 
 let playing = false;
 let paused = true;
@@ -221,6 +222,9 @@ function renderMandala() {
     mandalaSvg.appendChild(group);
     vectorItemNodes.set(item.id, group);
   });
+
+  activeCapLayer = svgEl("g", { class: "mandala-active-cap", "aria-hidden": "true" });
+  mandalaSvg.appendChild(activeCapLayer);
 }
 
 function preloadDetailImages() {
@@ -583,6 +587,10 @@ function setActiveVector(item) {
   }
   node.classList.add("is-active");
   mandalaSvg.appendChild(node);
+  renderActiveCap(item);
+  if (activeCapLayer) {
+    mandalaSvg.appendChild(activeCapLayer);
+  }
 }
 
 function clearActiveVector() {
@@ -590,6 +598,9 @@ function clearActiveVector() {
   vectorItemNodes.forEach((node) => node.classList.remove("is-active"));
   if (radianceLayer) {
     radianceLayer.replaceChildren();
+  }
+  if (activeCapLayer) {
+    activeCapLayer.replaceChildren();
   }
 }
 
@@ -603,6 +614,27 @@ function renderActiveRadiance(item) {
   group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--inner", r: radius }));
   group.appendChild(svgEl("circle", { class: "mandala-radiance mandala-radiance--outer", r: radius }));
   radianceLayer.replaceChildren(group);
+}
+
+function renderActiveCap(item) {
+  if (!activeCapLayer) return;
+  const radius = vectorRadius(item.id);
+  const group = svgEl("g", {
+    transform: `translate(${item.pos.x} ${item.pos.y})`,
+  });
+  group.appendChild(svgEl("circle", { class: "mandala-active-cap-ring", r: radius + 1.02 }));
+  group.appendChild(svgEl("circle", { class: "mandala-active-cap-circle", r: radius }));
+  const text = svgEl("text", {
+    class: `mandala-active-cap-text${item.label.join("").length > 4 ? " mandala-active-cap-text--small" : ""}`,
+  });
+  item.label.forEach((line, index) => {
+    text.appendChild(svgEl("tspan", {
+      x: 0,
+      dy: index === 0 ? "-0.62em" : "1.12em",
+    }, [document.createTextNode(line)]));
+  });
+  group.appendChild(text);
+  activeCapLayer.replaceChildren(group);
 }
 
 function updateActiveGeometry() {

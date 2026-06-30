@@ -274,6 +274,46 @@ body {
   pointer-events: none;
 }
 
+.mandala-active-cap {
+  pointer-events: none;
+}
+
+.mandala-active-cap-ring {
+  fill: none;
+  stroke: #fff7a8;
+  stroke-width: 1.15;
+  vector-effect: non-scaling-stroke;
+  filter:
+    drop-shadow(0 0 4px rgba(255, 252, 210, 1))
+    drop-shadow(0 0 12px rgba(255, 195, 65, 0.86));
+}
+
+.mandala-active-cap-circle {
+  fill: #fff8b8;
+  stroke: #ff3a28;
+  stroke-width: 4.2;
+  vector-effect: non-scaling-stroke;
+  paint-order: stroke fill;
+}
+
+.mandala-active-cap-text {
+  fill: #080d18;
+  font-family: "Hiragino Sans GB", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: var(--label-size, 2.35px);
+  font-weight: 900;
+  letter-spacing: 0;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke fill;
+  stroke: #fffff6;
+  stroke-width: 0.7;
+  vector-effect: non-scaling-stroke;
+}
+
+.mandala-active-cap-text--small {
+  font-size: 1.85px;
+}
+
 .mandala-circle {
   fill: rgba(255, 248, 218, 0.9);
   stroke: rgba(126, 32, 31, 0.85);
