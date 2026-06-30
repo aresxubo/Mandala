@@ -36,3 +36,13 @@ python3 -m http.server 8123
 ```text
 http://<Mac 局域网 IP>:8123/index.html
 ```
+
+## 在线部署
+
+这是纯静态网页，国内托管推荐优先使用 EdgeOne Pages。部署时不需要构建命令，发布目录选择：
+
+```text
+web/mandala
+```
+
+详细步骤见 [DEPLOY.md](./DEPLOY.md)。
