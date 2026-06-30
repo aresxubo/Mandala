@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>三十七堆曼茶罗观想播放</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="viewer" aria-label="三十七堆曼茶罗二维布局">
+        <div class="aura" aria-hidden="true"></div>
+        <div class="stage" id="stage">
+          <img class="layout-reference" src="./assets/background-page1-layout.png" alt="" aria-hidden="true">
+          <svg class="mandala-svg" id="mandalaSvg" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="三十七堆曼茶罗矢量布局"></svg>
+        </div>
+      </section>
+
+      <div class="marker" id="marker" aria-hidden="true"></div>
+      <svg class="connector" id="connector" aria-hidden="true">
+        <defs>
+          <linearGradient id="connectorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#fff4b8" stop-opacity="0.95"></stop>
+            <stop offset="55%" stop-color="#d9b45b" stop-opacity="0.55"></stop>
+            <stop offset="100%" stop-color="#d9b45b" stop-opacity="0.08"></stop>
+          </linearGradient>
+        </defs>
+        <line id="connectorLine" x1="0" y1="0" x2="0" y2="0"></line>
+        <circle id="connectorOrigin" cx="0" cy="0" r="3.5"></circle>
+      </svg>
+      <div class="detail" id="detail" aria-live="polite">
+        <img id="detailImage" alt="">
+        <div class="detail-text" id="detailText"></div>
+        <div class="detail-caption" id="detailCaption"></div>
+      </div>
+      <div class="status-toast" id="statusToast" aria-live="polite" aria-hidden="true">
+        <div class="status-toast__icon" id="statusIcon"></div>
+        <div class="status-toast__copy">
+          <div class="status-toast__title" id="statusTitle"></div>
+          <div class="status-toast__meta" id="statusMeta"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
