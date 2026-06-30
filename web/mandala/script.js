@@ -147,7 +147,7 @@ const items = [
   label: circleLabels[item.id],
   src: item.id <= 13
     ? ""
-    : `./assets/details/${String(item.id).padStart(2, "0")}-${item.name}.${imageExt(item.id)}`,
+    : `./assets/details-hd/${String(item.id).padStart(2, "0")}-${item.name}.${imageExt(item.id)}`,
 }));
 
 function imageExt(id) {
