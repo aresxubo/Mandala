@@ -7,7 +7,8 @@
 - `web/mandala/index.html`：页面入口。
 - `web/mandala/styles.css`：视觉样式与动画。
 - `web/mandala/script.js`：播放、键盘、触控、矢量定位逻辑。
-- `web/mandala/index.html` 内的 `mandala-backdrop`：页面底盘矢量背景。
+- `web/mandala/assets/backgrounds/`：当前使用的 AI 唐卡风格曼扎背景。
+- `web/mandala/index.html` 内的 `mandala-backdrop`：旧矢量底盘草稿，目前隐藏不用。
 - `web/mandala/assets/layout/`：临时保留的原位图参考层，用于和矢量背景叠放校对。
 - `web/mandala/assets/details/`：当前播放使用的 14-37 高清插图。
 - `web/mandala/assets/source-grids/`：用于重新切割细节图的 16 宫格源图。
