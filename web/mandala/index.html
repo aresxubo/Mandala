@@ -35,6 +35,31 @@
                 <stop offset="75%" stop-color="#f3d91f"></stop>
                 <stop offset="100%" stop-color="#f3d91f"></stop>
               </linearGradient>
+              <pattern id="rimCloudBlue" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#1b70d8"></rect>
+                <path d="M-1 4 C1.2 1.9 3.4 2.1 4.4 3.5 C5.5 5.1 3.8 6.6 2.1 5.6" fill="none" stroke="#77d7ff" stroke-width="0.55" stroke-linecap="round"></path>
+                <path d="M4.2 1.2 C6.3 0.1 8.1 1.5 7.5 3.2 C7.1 4.4 5.8 4.8 4.8 4.1" fill="none" stroke="#0a3c96" stroke-width="0.45" stroke-linecap="round"></path>
+              </pattern>
+              <pattern id="rimCloudGold" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#f2b51e"></rect>
+                <path d="M-1 4 C1.1 2 3.6 2.2 4.5 3.7 C5.3 5.1 3.8 6.6 2 5.6" fill="none" stroke="#fff2a0" stroke-width="0.55" stroke-linecap="round"></path>
+                <path d="M4.1 1.1 C6.2 0.1 8 1.4 7.5 3.1 C7.1 4.4 5.7 4.8 4.8 4.1" fill="none" stroke="#b95712" stroke-width="0.45" stroke-linecap="round"></path>
+              </pattern>
+              <pattern id="rimCloudCyan" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#27bac9"></rect>
+                <path d="M-1 4 C1.1 2 3.5 2.2 4.5 3.6 C5.4 5.1 3.8 6.6 2.1 5.6" fill="none" stroke="#c3fff3" stroke-width="0.55" stroke-linecap="round"></path>
+                <path d="M4.2 1.1 C6.2 0.1 8 1.4 7.5 3.1 C7.1 4.3 5.8 4.8 4.8 4.1" fill="none" stroke="#12727f" stroke-width="0.45" stroke-linecap="round"></path>
+              </pattern>
+              <pattern id="rimCloudRose" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#d8328f"></rect>
+                <path d="M-1 4 C1.1 2 3.5 2.2 4.5 3.6 C5.4 5.1 3.8 6.6 2.1 5.6" fill="none" stroke="#ffc1df" stroke-width="0.55" stroke-linecap="round"></path>
+                <path d="M4.2 1.1 C6.2 0.1 8 1.4 7.5 3.1 C7.1 4.3 5.8 4.8 4.8 4.1" fill="none" stroke="#7b185d" stroke-width="0.45" stroke-linecap="round"></path>
+              </pattern>
+              <pattern id="rimCloudOrange" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#ef5a22"></rect>
+                <path d="M-1 4 C1.1 2 3.5 2.2 4.5 3.6 C5.4 5.1 3.8 6.6 2.1 5.6" fill="none" stroke="#ffc46d" stroke-width="0.55" stroke-linecap="round"></path>
+                <path d="M4.2 1.1 C6.2 0.1 8 1.4 7.5 3.1 C7.1 4.3 5.8 4.8 4.8 4.1" fill="none" stroke="#a72c16" stroke-width="0.45" stroke-linecap="round"></path>
+              </pattern>
               <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#06143c" flood-opacity="0.32"></feDropShadow>
               </filter>
@@ -42,18 +67,13 @@
             <rect class="backdrop-paper" x="0" y="0" width="100" height="100"></rect>
             <ellipse class="backdrop-halo" cx="50" cy="50" rx="45.5" ry="45.5"></ellipse>
             <g class="backdrop-rim" filter="url(#softShadow)">
-              <ellipse class="rim-band rim-band--01" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--02" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--03" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--04" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--05" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--06" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--07" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--08" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--09" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--10" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--11" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
-              <ellipse class="rim-band rim-band--12" cx="50" cy="50" rx="44.8" ry="44.8" pathLength="360"></ellipse>
+              <path class="rim-band rim-band--01" d="M37.65 6.94 A44.8 44.8 0 0 1 65.32 7.90"></path>
+              <path class="rim-band rim-band--02" d="M75.05 12.86 A44.8 44.8 0 0 1 93.06 37.65"></path>
+              <path class="rim-band rim-band--03" d="M94.77 48.44 A44.8 44.8 0 0 1 83.29 79.98"></path>
+              <path class="rim-band rim-band--04" d="M74.40 87.57 A44.8 44.8 0 0 1 46.87 94.69"></path>
+              <path class="rim-band rim-band--05" d="M35.41 92.36 A44.8 44.8 0 0 1 12.01 73.74"></path>
+              <path class="rim-band rim-band--06" d="M7.39 63.84 A44.8 44.8 0 0 1 8.46 33.22"></path>
+              <path class="rim-band rim-band--07" d="M13.76 23.67 A44.8 44.8 0 0 1 34.68 7.90"></path>
             </g>
             <ellipse class="backdrop-outer-water" cx="50" cy="50" rx="41.8" ry="41.8"></ellipse>
             <ellipse class="backdrop-inner-water" cx="50" cy="50" rx="35.6" ry="35.6"></ellipse>

@@ -111,91 +111,44 @@ body {
 .rim-band {
   fill: none;
   stroke-linecap: butt;
-  stroke-width: 4.8;
-  transform: rotate(-90deg);
-  transform-box: fill-box;
-  transform-origin: center;
+  stroke-width: 6.1;
   vector-effect: non-scaling-stroke;
 }
 
 .rim-band--01 {
-  stroke: #1b70d8;
-  stroke-dasharray: 28 332;
-  stroke-dashoffset: 2;
+  stroke: url(#rimCloudBlue);
 }
 
 .rim-band--02 {
-  stroke: #f2a51c;
-  stroke-dasharray: 34 326;
-  stroke-dashoffset: -31;
+  stroke: url(#rimCloudGold);
 }
 
 .rim-band--03 {
-  stroke: #31c1c9;
-  stroke-dasharray: 42 318;
-  stroke-dashoffset: -72;
+  stroke: url(#rimCloudCyan);
 }
 
 .rim-band--04 {
-  stroke: #d8328f;
-  stroke-dasharray: 31 329;
-  stroke-dashoffset: -119;
+  stroke: url(#rimCloudRose);
 }
 
 .rim-band--05 {
-  stroke: #2abbd0;
-  stroke-dasharray: 29 331;
-  stroke-dashoffset: -156;
+  stroke: url(#rimCloudCyan);
 }
 
 .rim-band--06 {
-  stroke: #f0b51e;
-  stroke-dasharray: 37 323;
-  stroke-dashoffset: -190;
+  stroke: url(#rimCloudGold);
 }
 
 .rim-band--07 {
-  stroke: #ee5b22;
-  stroke-dasharray: 30 330;
-  stroke-dashoffset: -232;
-}
-
-.rim-band--08 {
-  stroke: #1770d2;
-  stroke-dasharray: 25 335;
-  stroke-dashoffset: -268;
-}
-
-.rim-band--09 {
-  stroke: #d82e8c;
-  stroke-dasharray: 34 326;
-  stroke-dashoffset: -299;
-}
-
-.rim-band--10 {
-  stroke: #f2b51e;
-  stroke-dasharray: 26 334;
-  stroke-dashoffset: -338;
-}
-
-.rim-band--11 {
-  stroke: #1fb8ca;
-  stroke-dasharray: 21 339;
-  stroke-dashoffset: -367;
-}
-
-.rim-band--12 {
-  stroke: #ef5a22;
-  stroke-dasharray: 22 338;
-  stroke-dashoffset: -392;
+  stroke: url(#rimCloudOrange);
 }
 
 .backdrop-rim .rim-band:nth-child(even) {
-  stroke-width: 5.15;
+  stroke-width: 6.4;
 }
 
 .backdrop-rim .rim-band:nth-child(3n) {
-  stroke-width: 4.35;
+  stroke-width: 5.7;
 }
 
 .backdrop-outer-water {
