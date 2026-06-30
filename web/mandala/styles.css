@@ -16,11 +16,14 @@ body {
   height: 100%;
   min-height: 100dvh;
   margin: 0;
+  overscroll-behavior: none;
 }
 
 body {
   overflow: hidden;
-  touch-action: manipulation;
+  position: fixed;
+  inset: 0;
+  touch-action: none;
   background:
     radial-gradient(circle at 50% 46%, rgba(218, 168, 78, 0.16), transparent 34%),
     radial-gradient(circle at 24% 18%, rgba(139, 38, 39, 0.2), transparent 28%),
@@ -39,7 +42,8 @@ body {
   place-items: center;
   padding: max(1.6vh, env(safe-area-inset-top)) max(1.6vw, env(safe-area-inset-right)) max(1.6vh, env(safe-area-inset-bottom)) max(1.6vw, env(safe-area-inset-left));
   isolation: isolate;
-  touch-action: manipulation;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .viewer {
@@ -76,7 +80,7 @@ body {
     0 0 72px rgba(215, 162, 72, 0.2);
   filter: drop-shadow(0 18px 46px rgba(0, 0, 0, 0.28));
   overflow: hidden;
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 .layout-reference {

@@ -747,15 +747,22 @@ function isInTimeZone(event) {
 
 function beginPointer(event) {
   if (!event.isPrimary || (event.pointerType !== "touch" && event.pointerType !== "pen")) return;
+  const timeZone = isInTimeZone(event);
+  if (timeZone) {
+    event.preventDefault();
+  }
   pointerState = {
     id: event.pointerId,
     startX: event.clientX,
     startY: event.clientY,
     lastY: event.clientY,
-    timeZone: isInTimeZone(event),
+    timeZone,
     moved: false,
-    swiping: false,
+    swiping: timeZone,
   };
+  if (timeZone && event.target && typeof event.target.setPointerCapture === "function") {
+    event.target.setPointerCapture(event.pointerId);
+  }
 }
 
 function movePointer(event) {
@@ -769,7 +776,11 @@ function movePointer(event) {
     pointerState.moved = true;
   }
 
-  if (pointerState.timeZone && !pointerState.swiping && absY > 28 && absY > absX * 1.35) {
+  if (pointerState.timeZone) {
+    event.preventDefault();
+  }
+
+  if (pointerState.timeZone && !pointerState.swiping && absY > 18 && absY > absX * 1.15) {
     pointerState.swiping = true;
   }
 
@@ -790,7 +801,12 @@ function endPointer(event) {
   const endedState = pointerState;
   pointerState = null;
 
-  if (endedState.swiping || endedState.timeZone || endedState.moved) return;
+  if (endedState.timeZone) {
+    event.preventDefault();
+    return;
+  }
+
+  if (endedState.swiping || endedState.moved) return;
 
   const now = window.performance.now();
   const lastTap = endPointer.lastTap || { time: 0, x: 0, y: 0 };
@@ -830,7 +846,7 @@ function handleKeydown(event) {
 }
 
 renderMandala();
-window.addEventListener("pointerdown", beginPointer, { passive: true });
+window.addEventListener("pointerdown", beginPointer, { passive: false });
 window.addEventListener("pointermove", movePointer, { passive: false });
 window.addEventListener("pointerup", endPointer, { passive: false });
 window.addEventListener("pointercancel", () => {
