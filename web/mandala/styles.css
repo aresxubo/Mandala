@@ -111,8 +111,7 @@ body {
 .rim-band {
   fill: none;
   stroke-linecap: butt;
-  stroke-width: 6.1;
-  vector-effect: non-scaling-stroke;
+  stroke-width: 3.4;
 }
 
 .rim-band--01 {
@@ -144,11 +143,11 @@ body {
 }
 
 .backdrop-rim .rim-band:nth-child(even) {
-  stroke-width: 6.4;
+  stroke-width: 3.7;
 }
 
 .backdrop-rim .rim-band:nth-child(3n) {
-  stroke-width: 5.7;
+  stroke-width: 3.2;
 }
 
 .backdrop-outer-water {
