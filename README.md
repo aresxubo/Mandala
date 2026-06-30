@@ -7,7 +7,7 @@
 - `web/mandala/index.html`：页面入口。
 - `web/mandala/styles.css`：视觉样式与动画。
 - `web/mandala/script.js`：播放、键盘、触控、矢量定位逻辑。
-- `web/mandala/assets/layout/`：页面底图。
+- `web/mandala/index.html` 内的 `mandala-backdrop`：页面底盘矢量背景。
 - `web/mandala/assets/details/`：当前播放使用的 14-37 高清插图。
 - `web/mandala/assets/source-grids/`：用于重新切割细节图的 16 宫格源图。
 - `web/mandala/assets/qa/`：当前保留的裁剪检查图。
@@ -34,4 +34,3 @@ python3 -m http.server 8123
 ```text
 http://<Mac 局域网 IP>:8123/index.html
 ```
-

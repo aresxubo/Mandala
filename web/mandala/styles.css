@@ -79,16 +79,134 @@ body {
   touch-action: manipulation;
 }
 
-.layout-reference {
+.mandala-backdrop {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
-  opacity: 0.42;
   user-select: none;
-  -webkit-user-drag: none;
-  filter: saturate(0.95) contrast(0.92);
+}
+
+.backdrop-paper {
+  fill: #fff8dc;
+}
+
+.backdrop-halo {
+  fill: url(#centerGlow);
+}
+
+.rim-segment {
+  fill: none;
+  stroke-width: 4.8;
+  stroke-linecap: butt;
+  vector-effect: non-scaling-stroke;
+}
+
+.rim-segment--east {
+  stroke: #20bdd0;
+}
+
+.rim-segment--south {
+  stroke: #f0bd18;
+}
+
+.rim-segment--west {
+  stroke: #d22f82;
+}
+
+.rim-segment--north {
+  stroke: #f26523;
+  stroke-dasharray: 18 9;
+}
+
+.backdrop-outer-water {
+  fill: #18229f;
+  stroke: rgba(255, 222, 93, 0.82);
+  stroke-width: 0.32;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-inner-water {
+  fill: url(#oceanGlow);
+  stroke: rgba(24, 44, 160, 0.34);
+  stroke-width: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-center-glow {
+  fill: rgba(148, 239, 231, 0.18);
+  stroke: rgba(255, 246, 181, 0.16);
+  stroke-width: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-lotus-lines ellipse {
+  fill: none;
+  stroke: rgba(246, 237, 157, 0.28);
+  stroke-width: 0.18;
+  stroke-dasharray: 0.9 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-cardinals text {
+  fill: rgba(29, 42, 141, 0.82);
+  font-size: 2.35px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+  letter-spacing: 0;
+}
+
+.backdrop-axis line {
+  stroke: rgba(255, 250, 189, 0.2);
+  stroke-width: 0.22;
+  stroke-dasharray: 1.1 1.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-offering-path path {
+  fill: none;
+  stroke: rgba(255, 238, 145, 0.34);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1.8 1.3;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-mountain rect:first-child {
+  fill: url(#mountainTop);
+  stroke: #10133a;
+  stroke-width: 0.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-mountain path {
+  stroke: #10133a;
+  stroke-width: 0.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.backdrop-mountain path:nth-of-type(1) {
+  fill: #ed262b;
+}
+
+.backdrop-mountain path:nth-of-type(2) {
+  fill: #f4dc24;
+}
+
+.backdrop-mountain path:nth-of-type(3) {
+  fill: #fff7dd;
+}
+
+.backdrop-mountain path:nth-of-type(4) {
+  fill: #1948d8;
+}
+
+.backdrop-mountain rect:last-child {
+  fill: rgba(255, 248, 221, 0.92);
+  stroke: rgba(24, 26, 67, 0.72);
+  stroke-width: 0.18;
+  vector-effect: non-scaling-stroke;
 }
 
 .mandala-svg {
