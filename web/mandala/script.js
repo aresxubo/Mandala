@@ -144,7 +144,9 @@ const items = [
   ...item,
   pos: calibratedPos[item.id],
   label: circleLabels[item.id],
-  src: `./assets/details/${String(item.id).padStart(2, "0")}-${item.name}.${imageExt(item.id)}`,
+  src: item.id <= 13
+    ? ""
+    : `./assets/details/${String(item.id).padStart(2, "0")}-${item.name}.${imageExt(item.id)}`,
 }));
 
 function imageExt(id) {
