@@ -314,8 +314,7 @@ body {
 }
 
 .overview-item--goddess {
-  width: calc(var(--overview-size) * 1.18);
-  transform: translate(-50%, -62%) scale(0.98);
+  width: calc(var(--overview-size) * 1.12);
 }
 
 .overview-item--corner-treasure {
@@ -324,6 +323,7 @@ body {
 
 .overview-item--goddess img {
   aspect-ratio: 0.78;
+  object-position: center 35%;
   border-radius: 50% / 50%;
 }
 
