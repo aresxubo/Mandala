@@ -261,7 +261,7 @@ function renderOverviewLayer() {
 function overviewSize(item) {
   if (item.id >= 14 && item.id <= 17) return "15%";
   if (item.id >= 18 && item.id <= 25) return "13%";
-  if (item.id >= 26 && item.id <= 33) return "14%";
+  if (item.id >= 26 && item.id <= 33) return "11.5%";
   return "12.5%";
 }
 

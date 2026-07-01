@@ -315,6 +315,7 @@ body {
 
 .overview-item--goddess {
   width: calc(var(--overview-size) * 1.18);
+  transform: translate(-50%, -62%) scale(0.98);
 }
 
 .overview-item--goddess img {
