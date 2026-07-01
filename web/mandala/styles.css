@@ -540,31 +540,6 @@ body {
     drop-shadow(0 0 22px rgba(224, 170, 70, 0.18));
 }
 
-.connector {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 24;
-  opacity: 0;
-  overflow: visible;
-  pointer-events: none;
-  transition: opacity 0.18s ease;
-}
-
-.connector line {
-  stroke: url(#connectorGradient);
-  stroke-width: clamp(1.2px, 0.18vw, 2.2px);
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 8px rgba(246, 204, 98, 0.54));
-}
-
-.connector circle {
-  fill: #fff4b8;
-  filter: drop-shadow(0 0 8px rgba(246, 204, 98, 0.8));
-}
-
 .detail img {
   display: block;
   width: auto;
@@ -572,13 +547,15 @@ body {
   max-height: min(68vh, 680px);
   height: auto;
   object-fit: contain;
-  border: 1px solid rgba(242, 210, 129, 0.72);
-  border-radius: 10px;
+  overflow: hidden;
+  border: clamp(2px, 0.32vw, 4px) solid rgba(246, 219, 139, 0.86);
+  border-radius: 50%;
   background: #f6efd9;
   box-shadow:
-    0 0 0 5px rgba(53, 35, 18, 0.58),
-    0 0 0 6px rgba(239, 196, 97, 0.26),
-    inset 0 0 22px rgba(99, 52, 21, 0.12);
+    0 0 0 clamp(7px, 0.95vw, 12px) rgba(53, 35, 18, 0.48),
+    0 0 0 clamp(8px, 1.08vw, 14px) rgba(239, 196, 97, 0.22),
+    0 16px 38px rgba(0, 0, 0, 0.36),
+    inset 0 0 24px rgba(99, 52, 21, 0.1);
   transition: opacity 0.14s ease;
 }
 
@@ -719,25 +696,6 @@ body {
   font-size: clamp(0.72rem, 1.6vw, 0.84rem);
   line-height: 1.2;
   white-space: nowrap;
-}
-
-.marker {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: clamp(14px, 2.1vw, 26px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(255, 234, 147, 0.95);
-  border-radius: 50%;
-  background: rgba(255, 211, 68, 0.5);
-  box-shadow:
-    0 0 0 10px rgba(245, 205, 91, 0.12),
-    0 0 34px rgba(247, 197, 65, 0.9),
-    0 0 68px rgba(235, 89, 47, 0.22);
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  z-index: 28;
-  pointer-events: none;
 }
 
 .overview-toggle {

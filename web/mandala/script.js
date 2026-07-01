@@ -165,10 +165,6 @@ const detail = document.querySelector("#detail");
 const detailImage = document.querySelector("#detailImage");
 const detailText = document.querySelector("#detailText");
 const detailCaption = document.querySelector("#detailCaption");
-const marker = document.querySelector("#marker");
-const connector = document.querySelector("#connector");
-const connectorLine = document.querySelector("#connectorLine");
-const connectorOrigin = document.querySelector("#connectorOrigin");
 const statusToast = document.querySelector("#statusToast");
 const statusIcon = document.querySelector("#statusIcon");
 const statusTitle = document.querySelector("#statusTitle");
@@ -624,38 +620,6 @@ function presentationPoint(origin) {
   };
 }
 
-function connectorEndPoint(center, scale) {
-  const dx = activeStartPoint.x - center.x;
-  const dy = activeStartPoint.y - center.y;
-  const halfWidth = Math.max(12, ((detail.offsetWidth || 360) * scale) / 2);
-  const halfHeight = Math.max(12, ((detail.offsetHeight || 360) * scale) / 2);
-
-  if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
-    return { x: center.x, y: center.y };
-  }
-
-  const edgeRatio = Math.min(
-    Math.abs(dx) > 0 ? halfWidth / Math.abs(dx) : Number.POSITIVE_INFINITY,
-    Math.abs(dy) > 0 ? halfHeight / Math.abs(dy) : Number.POSITIVE_INFINITY,
-  );
-  const insetRatio = Math.max(0, Math.min(edgeRatio * 0.92, 1));
-  return {
-    x: center.x + dx * insetRatio,
-    y: center.y + dy * insetRatio,
-  };
-}
-
-function renderConnector(center, opacity, scale) {
-  const end = connectorEndPoint(center, scale);
-  connectorLine.setAttribute("x1", String(activeStartPoint.x));
-  connectorLine.setAttribute("y1", String(activeStartPoint.y));
-  connectorLine.setAttribute("x2", String(end.x));
-  connectorLine.setAttribute("y2", String(end.y));
-  connectorOrigin.setAttribute("cx", String(activeStartPoint.x));
-  connectorOrigin.setAttribute("cy", String(activeStartPoint.y));
-  connector.style.opacity = String(Math.max(0, Math.min(0.82, opacity * 0.82)));
-}
-
 function setActiveVector(item) {
   stage.classList.add("has-active");
   vectorItemNodes.forEach((node) => node.classList.remove("is-active"));
@@ -721,8 +685,6 @@ function updateActiveGeometry() {
   if (!currentItem) return;
   activeStartPoint = stagePoint(currentItem.pos);
   activeFinalPoint = presentationPoint(activeStartPoint);
-  marker.style.left = `${activeStartPoint.x}px`;
-  marker.style.top = `${activeStartPoint.y}px`;
 }
 
 function setActiveItem(item) {
@@ -769,15 +731,11 @@ function setActiveItem(item) {
   updateActiveGeometry();
   detail.style.left = `${activeStartPoint.x}px`;
   detail.style.top = `${activeStartPoint.y}px`;
-  renderConnector(activeStartPoint, 0, 0.06);
 }
 
 function hideFloatingDetail() {
   detail.style.opacity = "0";
   detail.style.transform = "translate(-50%, -50%) scale(0.06)";
-  marker.style.opacity = "0";
-  marker.style.transform = "translate(-50%, -50%) scale(0)";
-  connector.style.opacity = "0";
 }
 
 function renderProgress() {
@@ -808,9 +766,6 @@ function renderProgress() {
   detail.style.top = `${y}px`;
   detail.style.opacity = String(Math.max(0, Math.min(1, opacity)));
   detail.style.transform = `translate(-50%, -50%) scale(${Math.max(0.06, scale)})`;
-  marker.style.opacity = String(Math.max(0, Math.min(1, opacity)));
-  marker.style.transform = `translate(-50%, -50%) scale(${0.68 + 0.32 * opacity})`;
-  renderConnector({ x, y }, opacity, Math.max(0.06, scale));
 }
 
 function easeOutBack(t) {
@@ -1090,6 +1045,5 @@ window.addEventListener("resize", () => {
   if (currentItem && elapsed >= enterMs) {
     detail.style.left = `${activeFinalPoint.x}px`;
     detail.style.top = `${activeFinalPoint.y}px`;
-    renderConnector(activeFinalPoint, Number(getComputedStyle(detail).opacity), 1);
   }
 });
