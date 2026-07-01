@@ -238,7 +238,7 @@ function renderOverviewLayer() {
   overviewLayer.replaceChildren();
   items.filter((item) => item.id > 13).forEach((item) => {
     const wrap = document.createElement("div");
-    wrap.className = `overview-item overview-item--${vectorKind(item.id)}${item.id >= 22 && item.id <= 25 ? " overview-item--corner-treasure" : ""}`;
+    wrap.className = `overview-item overview-item--${vectorKind(item.id)}`;
     wrap.style.setProperty("--overview-x", `${item.pos.x}%`);
     wrap.style.setProperty("--overview-y", `${item.pos.y}%`);
     wrap.style.setProperty("--overview-size", overviewSize(item));
@@ -270,10 +270,10 @@ function overviewSize(item) {
 
 function overviewOffset(id) {
   const offsets = {
-    22: { x: -5.8, y: 5.2 },
-    23: { x: -5.8, y: -5.2 },
-    24: { x: 5.8, y: -5.2 },
-    25: { x: 5.8, y: 5.2 },
+    22: { x: -4.64, y: 4.16 },
+    23: { x: -4.64, y: -4.16 },
+    24: { x: 4.64, y: -4.16 },
+    25: { x: 4.64, y: 4.16 },
   };
   return offsets[id] || { x: 0, y: 0 };
 }

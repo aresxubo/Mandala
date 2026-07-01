@@ -282,6 +282,14 @@ body {
   opacity: 0.62;
 }
 
+.stage.is-overview .layout-reference,
+.stage.is-overview .generated-background,
+.stage.is-overview .mandala-svg,
+.stage.is-overview .overview-layer {
+  transform: scale(1.16);
+  transform-origin: 50% 50%;
+}
+
 .overview-item {
   position: absolute;
   left: calc(var(--overview-x) + var(--overview-shift-x, 0%));
@@ -315,10 +323,6 @@ body {
 
 .overview-item--goddess {
   width: calc(var(--overview-size) * 1.12);
-}
-
-.overview-item--corner-treasure {
-  z-index: 2;
 }
 
 .overview-item--goddess img {
