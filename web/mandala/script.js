@@ -158,6 +158,8 @@ function imageExt(id) {
 
 const stage = document.querySelector("#stage");
 const mandalaSvg = document.querySelector("#mandalaSvg");
+const overviewLayer = document.querySelector("#overviewLayer");
+const overviewToggle = document.querySelector("#overviewToggle");
 const detail = document.querySelector("#detail");
 const detailImage = document.querySelector("#detailImage");
 const detailText = document.querySelector("#detailText");
@@ -189,6 +191,7 @@ let statusTimer = 0;
 let pointerState = null;
 let ignoreNextDblClickUntil = 0;
 let imageLoadToken = 0;
+let overviewMode = false;
 
 const enterMs = 920;
 const exitMs = 560;
@@ -225,6 +228,37 @@ function renderMandala() {
 
   activeCapLayer = svgEl("g", { class: "mandala-active-cap", "aria-hidden": "true" });
   mandalaSvg.appendChild(activeCapLayer);
+}
+
+function renderOverviewLayer() {
+  overviewLayer.replaceChildren();
+  items.filter((item) => item.id > 13).forEach((item) => {
+    const wrap = document.createElement("div");
+    wrap.className = `overview-item overview-item--${vectorKind(item.id)}`;
+    wrap.style.setProperty("--overview-x", `${item.pos.x}%`);
+    wrap.style.setProperty("--overview-y", `${item.pos.y}%`);
+    wrap.style.setProperty("--overview-size", overviewSize(item));
+
+    const image = document.createElement("img");
+    image.src = item.src;
+    image.alt = `${item.id} ${item.name}`;
+    image.loading = "eager";
+    image.decoding = "async";
+
+    const label = document.createElement("div");
+    label.className = "overview-item__label";
+    label.textContent = `${item.id} ${item.name}`;
+
+    wrap.append(image, label);
+    overviewLayer.appendChild(wrap);
+  });
+}
+
+function overviewSize(item) {
+  if (item.id >= 14 && item.id <= 17) return "15%";
+  if (item.id >= 18 && item.id <= 25) return "13%";
+  if (item.id >= 26 && item.id <= 33) return "14%";
+  return "12.5%";
 }
 
 function preloadDetailImages() {
@@ -646,6 +680,7 @@ function updateActiveGeometry() {
 }
 
 function setActiveItem(item) {
+  if (overviewMode) return;
   currentItem = item;
   imageLoadToken += 1;
   const token = imageLoadToken;
@@ -690,8 +725,16 @@ function setActiveItem(item) {
   renderConnector(activeStartPoint, 0, 0.06);
 }
 
+function hideFloatingDetail() {
+  detail.style.opacity = "0";
+  detail.style.transform = "translate(-50%, -50%) scale(0.06)";
+  marker.style.opacity = "0";
+  marker.style.transform = "translate(-50%, -50%) scale(0)";
+  connector.style.opacity = "0";
+}
+
 function renderProgress() {
-  if (!currentItem) return;
+  if (!currentItem || overviewMode) return;
   const { total, enter, exit } = itemTimings();
   const exitStart = total - exit;
   let scale = 1;
@@ -761,6 +804,7 @@ function tick(now) {
 }
 
 function startPlayback() {
+  setOverviewMode(false);
   saveSeconds();
   if (playing && paused) {
     paused = false;
@@ -788,6 +832,10 @@ function pausePlayback() {
 }
 
 function togglePlayback() {
+  if (overviewMode) {
+    setOverviewMode(false);
+  }
+
   if (!playing) {
     startPlayback();
     return;
@@ -810,11 +858,7 @@ function pauseAtCycleEnd() {
   elapsed = 0;
   lastFrame = 0;
   cancelAnimationFrame(frameId);
-  detail.style.opacity = "0";
-  detail.style.transform = "translate(-50%, -50%) scale(0.06)";
-  marker.style.opacity = "0";
-  marker.style.transform = "translate(-50%, -50%) scale(0)";
-  connector.style.opacity = "0";
+  hideFloatingDetail();
   clearActiveVector();
   showPauseStatus("一轮播放完成");
 }
@@ -826,13 +870,38 @@ function stopPlayback() {
   elapsed = 0;
   lastFrame = 0;
   cancelAnimationFrame(frameId);
-  detail.style.opacity = "0";
-  detail.style.transform = "translate(-50%, -50%) scale(0.06)";
-  marker.style.opacity = "0";
-  marker.style.transform = "translate(-50%, -50%) scale(0)";
-  connector.style.opacity = "0";
+  hideFloatingDetail();
   clearActiveVector();
   hideStatus();
+}
+
+function setOverviewMode(enabled) {
+  if (overviewMode === enabled) return;
+  overviewMode = enabled;
+  stage.classList.toggle("is-overview", overviewMode);
+  overviewLayer.setAttribute("aria-hidden", overviewMode ? "false" : "true");
+  overviewToggle.setAttribute("aria-pressed", overviewMode ? "true" : "false");
+  overviewToggle.textContent = overviewMode ? "退出整体" : "整体观想";
+
+  if (overviewMode) {
+    paused = true;
+    hideFloatingDetail();
+    clearActiveVector();
+    showPauseStatus("整体观想中");
+  } else {
+    if (currentItem && playing) {
+      setActiveVector(currentItem);
+      updateActiveGeometry();
+      renderProgress();
+    }
+    if (paused) {
+      showPauseStatus(playing ? "空格继续" : "双击/空格开始");
+    }
+  }
+}
+
+function toggleOverviewMode() {
+  setOverviewMode(!overviewMode);
 }
 
 function touchZoneWidth() {
@@ -945,7 +1014,9 @@ function handleKeydown(event) {
 
 preloadDetailImages();
 renderMandala();
+renderOverviewLayer();
 showPauseStatus("双击/空格开始");
+overviewToggle.addEventListener("click", toggleOverviewMode);
 window.addEventListener("pointerdown", beginPointer, { passive: false });
 window.addEventListener("pointermove", movePointer, { passive: false });
 window.addEventListener("pointerup", endPointer, { passive: false });
