@@ -694,7 +694,9 @@ function setActiveItem(item) {
   imageLoadToken += 1;
   const token = imageLoadToken;
   const textMode = item.id <= 13;
+  const goddessMode = item.id >= 26 && item.id <= 33;
   detail.classList.toggle("is-text", textMode);
+  detail.classList.toggle("is-goddess", goddessMode);
 
   if (textMode) {
     detail.classList.remove("is-loading");
