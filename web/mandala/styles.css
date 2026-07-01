@@ -284,8 +284,8 @@ body {
 
 .overview-item {
   position: absolute;
-  left: var(--overview-x);
-  top: var(--overview-y);
+  left: calc(var(--overview-x) + var(--overview-shift-x, 0%));
+  top: calc(var(--overview-y) + var(--overview-shift-y, 0%));
   width: var(--overview-size);
   max-width: 34%;
   max-height: 28%;
@@ -316,6 +316,10 @@ body {
 .overview-item--goddess {
   width: calc(var(--overview-size) * 1.18);
   transform: translate(-50%, -62%) scale(0.98);
+}
+
+.overview-item--corner-treasure {
+  z-index: 2;
 }
 
 .overview-item--goddess img {

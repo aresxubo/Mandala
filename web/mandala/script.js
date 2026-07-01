@@ -238,10 +238,13 @@ function renderOverviewLayer() {
   overviewLayer.replaceChildren();
   items.filter((item) => item.id > 13).forEach((item) => {
     const wrap = document.createElement("div");
-    wrap.className = `overview-item overview-item--${vectorKind(item.id)}`;
+    wrap.className = `overview-item overview-item--${vectorKind(item.id)}${item.id >= 22 && item.id <= 25 ? " overview-item--corner-treasure" : ""}`;
     wrap.style.setProperty("--overview-x", `${item.pos.x}%`);
     wrap.style.setProperty("--overview-y", `${item.pos.y}%`);
     wrap.style.setProperty("--overview-size", overviewSize(item));
+    const offset = overviewOffset(item.id);
+    wrap.style.setProperty("--overview-shift-x", `${offset.x}%`);
+    wrap.style.setProperty("--overview-shift-y", `${offset.y}%`);
 
     const image = document.createElement("img");
     image.src = item.src;
@@ -263,6 +266,16 @@ function overviewSize(item) {
   if (item.id >= 18 && item.id <= 25) return "13%";
   if (item.id >= 26 && item.id <= 33) return "11.5%";
   return "12.5%";
+}
+
+function overviewOffset(id) {
+  const offsets = {
+    22: { x: -5.8, y: 5.2 },
+    23: { x: -5.8, y: -5.2 },
+    24: { x: 5.8, y: -5.2 },
+    25: { x: 5.8, y: 5.2 },
+  };
+  return offsets[id] || { x: 0, y: 0 };
 }
 
 function preloadDetailImages() {
