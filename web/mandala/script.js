@@ -145,6 +145,7 @@ const items = [
   ...item,
   pos: calibratedPos[item.id],
   label: circleLabels[item.id],
+  audioSrc: `./assets/audio/${String(item.id).padStart(2, "0")}.mp3`,
   src: item.id <= 13
     ? ""
     : `./assets/details-hd/${String(item.id).padStart(2, "0")}-${item.name}.${imageExt(item.id)}`,
@@ -174,6 +175,7 @@ const statusTitle = document.querySelector("#statusTitle");
 const statusMeta = document.querySelector("#statusMeta");
 const vectorItemNodes = new Map();
 const imageCache = new Map();
+const narrationAudio = new Audio();
 let radianceLayer = null;
 let activeCapLayer = null;
 
@@ -192,6 +194,7 @@ let pointerState = null;
 let ignoreNextDblClickUntil = 0;
 let imageLoadToken = 0;
 let overviewMode = false;
+let audioUnlocked = false;
 
 const enterMs = 920;
 const exitMs = 560;
@@ -269,6 +272,48 @@ function preloadDetailImages() {
     image.src = item.src;
     imageCache.set(item.id, image);
   });
+}
+
+function unlockAudio() {
+  audioUnlocked = true;
+}
+
+function stopNarration() {
+  narrationAudio.pause();
+  narrationAudio.removeAttribute("src");
+  narrationAudio.load();
+}
+
+function playNarration(item) {
+  if (!audioUnlocked || overviewMode || !item.audioSrc) return;
+  narrationAudio.pause();
+  narrationAudio.currentTime = 0;
+  narrationAudio.playbackRate = 1;
+  narrationAudio.src = item.audioSrc;
+  narrationAudio.load();
+  const syncPlaybackRate = () => {
+    if (!Number.isFinite(narrationAudio.duration) || narrationAudio.duration <= 0) return;
+    narrationAudio.playbackRate = narrationRateFor(narrationAudio.duration);
+  };
+  if (narrationAudio.readyState >= 1) {
+    syncPlaybackRate();
+  } else {
+    narrationAudio.addEventListener("loadedmetadata", syncPlaybackRate, { once: true });
+  }
+  narrationAudio.play().catch(() => {
+    // Missing audio files or browser autoplay rules should not interrupt visualization.
+  });
+}
+
+function narrationRateFor(audioDurationSeconds) {
+  const availableSeconds = Math.max(0.6, durationSeconds - 0.15);
+  if (audioDurationSeconds <= availableSeconds) return 1;
+  return Number((audioDurationSeconds / availableSeconds).toFixed(2));
+}
+
+function syncCurrentNarrationRate() {
+  if (narrationAudio.paused || !Number.isFinite(narrationAudio.duration) || narrationAudio.duration <= 0) return;
+  narrationAudio.playbackRate = narrationRateFor(narrationAudio.duration);
 }
 
 function vectorKind(id) {
@@ -481,6 +526,7 @@ function adjustSeconds(delta) {
   const next = Math.max(1.2, durationSeconds + delta);
   durationSeconds = Number(next.toFixed(1));
   saveSeconds();
+  syncCurrentNarrationRate();
   showTimeStatus();
 }
 
@@ -682,6 +728,7 @@ function updateActiveGeometry() {
 function setActiveItem(item) {
   if (overviewMode) return;
   currentItem = item;
+  playNarration(item);
   imageLoadToken += 1;
   const token = imageLoadToken;
   const textMode = item.id <= 13;
@@ -804,11 +851,13 @@ function tick(now) {
 }
 
 function startPlayback() {
+  unlockAudio();
   setOverviewMode(false);
   saveSeconds();
   if (playing && paused) {
     paused = false;
     lastFrame = 0;
+    if (currentItem) playNarration(currentItem);
     hideStatus();
     return;
   }
@@ -828,10 +877,12 @@ function startPlayback() {
 function pausePlayback() {
   if (!playing) return;
   paused = true;
+  stopNarration();
   showPauseStatus();
 }
 
 function togglePlayback() {
+  unlockAudio();
   if (overviewMode) {
     setOverviewMode(false);
   }
@@ -844,9 +895,11 @@ function togglePlayback() {
   if (paused) {
     paused = false;
     lastFrame = 0;
+    if (currentItem) playNarration(currentItem);
     hideStatus();
   } else {
     paused = true;
+    stopNarration();
     showPauseStatus();
   }
 }
@@ -858,6 +911,7 @@ function pauseAtCycleEnd() {
   elapsed = 0;
   lastFrame = 0;
   cancelAnimationFrame(frameId);
+  stopNarration();
   hideFloatingDetail();
   clearActiveVector();
   showPauseStatus("一轮播放完成");
@@ -870,6 +924,7 @@ function stopPlayback() {
   elapsed = 0;
   lastFrame = 0;
   cancelAnimationFrame(frameId);
+  stopNarration();
   hideFloatingDetail();
   clearActiveVector();
   hideStatus();
@@ -885,6 +940,7 @@ function setOverviewMode(enabled) {
 
   if (overviewMode) {
     paused = true;
+    stopNarration();
     hideFloatingDetail();
     clearActiveVector();
     showPauseStatus("整体观想中");
