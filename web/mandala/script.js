@@ -191,6 +191,7 @@ let ignoreNextDblClickUntil = 0;
 let imageLoadToken = 0;
 let overviewMode = false;
 let audioUnlocked = false;
+let waitingForDetailImage = false;
 
 const enterMs = 920;
 const exitMs = 560;
@@ -690,7 +691,6 @@ function updateActiveGeometry() {
 function setActiveItem(item) {
   if (overviewMode) return;
   currentItem = item;
-  playNarration(item);
   imageLoadToken += 1;
   const token = imageLoadToken;
   const textMode = item.id <= 13;
@@ -699,22 +699,25 @@ function setActiveItem(item) {
   detail.classList.toggle("is-goddess", goddessMode);
 
   if (textMode) {
+    waitingForDetailImage = false;
     detail.classList.remove("is-loading");
     detailImage.removeAttribute("src");
     detailImage.alt = "";
     detailText.textContent = item.name;
+    if (!paused && playing) playNarration(item);
   } else {
+    waitingForDetailImage = true;
     detailText.textContent = "";
     detailImage.alt = `${item.id} ${item.name}`;
     detail.classList.add("is-loading");
+    detail.style.opacity = "0";
+    detail.style.transform = "translate(-50%, -50%) scale(0.06)";
     detailImage.src = transparentPixel;
     const cachedImage = imageCache.get(item.id);
     const revealImage = () => {
-      if (token !== imageLoadToken) return;
+      if (token !== imageLoadToken || currentItem?.id !== item.id) return;
       detailImage.src = item.src;
-      detail.classList.remove("is-loading");
-      updateActiveGeometry();
-      renderProgress();
+      revealDecodedImage(item, token);
     };
 
     if (cachedImage && cachedImage.complete && cachedImage.naturalWidth > 0) {
@@ -735,7 +738,31 @@ function setActiveItem(item) {
   detail.style.top = `${activeStartPoint.y}px`;
 }
 
+function revealDecodedImage(item, token) {
+  const reveal = () => {
+    if (token !== imageLoadToken || currentItem?.id !== item.id) return;
+    waitingForDetailImage = false;
+    elapsed = 0;
+    lastFrame = 0;
+    if (!paused && playing) playNarration(item);
+    detail.classList.remove("is-loading");
+    updateActiveGeometry();
+    renderProgress();
+  };
+
+  if (typeof detailImage.decode === "function") {
+    detailImage.decode().then(reveal).catch(reveal);
+  } else if (detailImage.complete && detailImage.naturalWidth > 0) {
+    reveal();
+  } else {
+    detailImage.addEventListener("load", reveal, { once: true });
+    detailImage.addEventListener("error", reveal, { once: true });
+  }
+}
+
 function hideFloatingDetail() {
+  imageLoadToken += 1;
+  waitingForDetailImage = false;
   detail.style.opacity = "0";
   detail.style.transform = "translate(-50%, -50%) scale(0.06)";
 }
@@ -789,9 +816,14 @@ function tick(now) {
   if (!lastFrame) lastFrame = now;
 
   if (!paused) {
-    elapsed += now - lastFrame;
-    renderProgress();
-    if (elapsed >= itemTimings().total) {
+    if (waitingForDetailImage) {
+      lastFrame = now;
+    } else {
+      elapsed += now - lastFrame;
+      renderProgress();
+    }
+
+    if (!waitingForDetailImage && elapsed >= itemTimings().total) {
       currentIndex += 1;
       if (currentIndex >= items.length) {
         pauseAtCycleEnd();
@@ -1002,11 +1034,6 @@ function endPointer(event) {
 
   endPointer.lastTap = { time: now, x: event.clientX, y: event.clientY };
 }
-
-detailImage.addEventListener("load", () => {
-  updateActiveGeometry();
-  renderProgress();
-});
 
 function handleKeydown(event) {
   if (event.code === "Space") {
