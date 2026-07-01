@@ -145,7 +145,10 @@ const items = [
   ...item,
   pos: calibratedPos[item.id],
   label: circleLabels[item.id],
-  audioSrc: `./assets/audio/${String(item.id).padStart(2, "0")}.mp3`,
+  audioSources: [
+    `./assets/audio/${String(item.id).padStart(2, "0")}.mp3`,
+    `./assets/audio/${String(item.id).padStart(2, "0")}.wav`,
+  ],
   src: item.id <= 13
     ? ""
     : `./assets/details-hd/${String(item.id).padStart(2, "0")}-${item.name}.${imageExt(item.id)}`,
@@ -192,6 +195,7 @@ let imageLoadToken = 0;
 let overviewMode = false;
 let audioUnlocked = false;
 let waitingForDetailImage = false;
+let audioLoadToken = 0;
 
 const enterMs = 920;
 const exitMs = 560;
@@ -276,30 +280,42 @@ function unlockAudio() {
 }
 
 function stopNarration() {
+  audioLoadToken += 1;
   narrationAudio.pause();
   narrationAudio.removeAttribute("src");
   narrationAudio.load();
 }
 
 function playNarration(item) {
-  if (!audioUnlocked || overviewMode || !item.audioSrc) return;
-  narrationAudio.pause();
-  narrationAudio.currentTime = 0;
-  narrationAudio.playbackRate = 1;
-  narrationAudio.src = item.audioSrc;
-  narrationAudio.load();
-  const syncPlaybackRate = () => {
-    if (!Number.isFinite(narrationAudio.duration) || narrationAudio.duration <= 0) return;
-    narrationAudio.playbackRate = narrationRateFor(narrationAudio.duration);
-  };
-  if (narrationAudio.readyState >= 1) {
-    syncPlaybackRate();
-  } else {
+  if (!audioUnlocked || overviewMode || !item.audioSources?.length) return;
+  audioLoadToken += 1;
+  const token = audioLoadToken;
+
+  const playSource = (sourceIndex) => {
+    if (token !== audioLoadToken || sourceIndex >= item.audioSources.length) return;
+    narrationAudio.pause();
+    narrationAudio.currentTime = 0;
+    narrationAudio.playbackRate = 1;
+    narrationAudio.src = item.audioSources[sourceIndex];
+    narrationAudio.load();
+
+    const syncPlaybackRate = () => {
+      if (token !== audioLoadToken || !Number.isFinite(narrationAudio.duration) || narrationAudio.duration <= 0) return;
+      narrationAudio.playbackRate = narrationRateFor(narrationAudio.duration);
+    };
+    const tryNextSource = () => {
+      if (token !== audioLoadToken) return;
+      playSource(sourceIndex + 1);
+    };
+
     narrationAudio.addEventListener("loadedmetadata", syncPlaybackRate, { once: true });
-  }
-  narrationAudio.play().catch(() => {
-    // Missing audio files or browser autoplay rules should not interrupt visualization.
-  });
+    narrationAudio.addEventListener("error", tryNextSource, { once: true });
+    narrationAudio.play().catch(() => {
+      // Missing audio files or browser autoplay rules should not interrupt visualization.
+    });
+  };
+
+  playSource(0);
 }
 
 function narrationRateFor(audioDurationSeconds) {
