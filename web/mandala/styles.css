@@ -561,14 +561,14 @@ body {
 
 .detail.is-goddess {
   width: auto;
-  max-width: min(78vw, 430px);
+  max-width: min(84vw, 520px);
   max-height: min(68vh, 640px);
 }
 
 .detail.is-goddess img {
-  width: min(43vh, 420px);
-  height: min(64vh, 620px);
-  max-width: 74vw;
+  width: min(52vh, 500px);
+  height: min(66vh, 640px);
+  max-width: 82vw;
   max-height: min(68vh, 640px);
   object-fit: cover;
   object-position: center;
@@ -783,8 +783,8 @@ body {
   }
 
   .detail.is-goddess img {
-    width: min(40vh, 72vw, 360px);
-    height: min(60dvh, 540px);
+    width: min(78vw, 46vh, 430px);
+    height: min(60dvh, 560px);
   }
 
   .detail.is-text .detail-text {
