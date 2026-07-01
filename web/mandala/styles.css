@@ -292,27 +292,42 @@ body {
   transform: translate(-50%, -50%) scale(0.98);
   opacity: 0.96;
   filter:
-    drop-shadow(0 5px 12px rgba(0, 0, 0, 0.48))
+    drop-shadow(0 6px 14px rgba(0, 0, 0, 0.46))
     drop-shadow(0 0 10px rgba(255, 217, 118, 0.22));
 }
 
 .overview-item img {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 1;
   max-height: min(23vh, 28vw);
-  object-fit: contain;
-  border: 1px solid rgba(242, 210, 129, 0.54);
-  border-radius: 6px;
-  background: rgba(246, 239, 217, 0.88);
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  border: max(1px, 0.18vw) solid rgba(246, 219, 139, 0.84);
+  border-radius: 50%;
+  background: rgba(246, 239, 217, 0.9);
+  box-shadow:
+    0 0 0 max(3px, 0.45vw) rgba(53, 35, 18, 0.42),
+    0 0 0 max(4px, 0.56vw) rgba(239, 196, 97, 0.22),
+    inset 0 0 12px rgba(99, 52, 21, 0.1);
+}
+
+.overview-item--goddess {
+  width: calc(var(--overview-size) * 1.18);
+}
+
+.overview-item--goddess img {
+  aspect-ratio: 0.78;
+  border-radius: 50% / 50%;
 }
 
 .overview-item__label {
   position: absolute;
   left: 50%;
-  bottom: 0.18rem;
+  bottom: -0.08rem;
   transform: translateX(-50%);
-  max-width: calc(100% - 0.42rem);
+  max-width: calc(100% - 0.24rem);
   padding: 0.06rem 0.34rem;
   border-radius: 999px;
   background: rgba(20, 17, 14, 0.58);
