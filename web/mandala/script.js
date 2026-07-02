@@ -1,6 +1,6 @@
 const storageKey = "mandala-detail-hold-seconds";
 
-const layoutCenter = { x: 47.6, y: 48.7 };
+const layoutCenter = { x: 49.92, y: 48.41 };
 
 function layoutPoint(dx = 0, dy = 0) {
   return {
