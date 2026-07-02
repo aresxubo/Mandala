@@ -1,13 +1,11 @@
 const storageKey = "mandala-detail-hold-seconds";
 
-const cx = 54.78;
-const cy = 50.25;
+const layoutCenter = { x: 47.6, y: 48.7 };
 
-function polar(rx, ry, degrees) {
-  const radians = (degrees * Math.PI) / 180;
+function layoutPoint(dx = 0, dy = 0) {
   return {
-    x: cx + rx * Math.cos(radians),
-    y: cy + ry * Math.sin(radians),
+    x: Number((layoutCenter.x + dx).toFixed(2)),
+    y: Number((layoutCenter.y + dy).toFixed(2)),
   };
 }
 
@@ -24,43 +22,43 @@ const size = {
 };
 
 const calibratedPos = {
-  1: { x: 47.4, y: 49.6 },
-  2: { x: 47.6, y: 84.6 },
-  3: { x: 9.8, y: 49.0 },
-  4: { x: 47.3, y: 10.8 },
-  5: { x: 85.0, y: 49.2 },
-  6: { x: 34.5, y: 82.4 },
-  7: { x: 58.6, y: 82.5 },
-  8: { x: 10.7, y: 38.0 },
-  9: { x: 10.9, y: 58.8 },
-  10: { x: 58.8, y: 13.8 },
-  11: { x: 36.4, y: 13.8 },
-  12: { x: 84.8, y: 56.4 },
-  13: { x: 84.8, y: 38.4 },
-  14: { x: 47.4, y: 79.4 },
-  15: { x: 16.0, y: 48.8 },
-  16: { x: 47.5, y: 17.5 },
-  17: { x: 78.5, y: 48.8 },
-  18: { x: 47.4, y: 73.6 },
-  19: { x: 22.5, y: 48.7 },
-  20: { x: 47.5, y: 23.9 },
-  21: { x: 73.3, y: 48.6 },
-  22: { x: 34.6, y: 62.1 },
-  23: { x: 34.5, y: 36.4 },
-  24: { x: 61.5, y: 36.1 },
-  25: { x: 61.5, y: 61.4 },
-  26: { x: 47.4, y: 67.8 },
-  27: { x: 28.8, y: 48.0 },
-  28: { x: 47.5, y: 29.8 },
-  29: { x: 67.4, y: 48.6 },
-  30: { x: 38.7, y: 56.9 },
-  31: { x: 38.6, y: 39.6 },
-  32: { x: 57.3, y: 39.0 },
-  33: { x: 57.4, y: 57.5 },
-  34: { x: 47.5, y: 61.0 },
-  35: { x: 47.4, y: 36.2 },
-  36: { x: 35.0, y: 48.8 },
-  37: { x: 60.6, y: 48.7 },
+  1: layoutPoint(),
+  2: layoutPoint(0, 36.9),
+  3: layoutPoint(-37.6, 0),
+  4: layoutPoint(0, -36.9),
+  5: layoutPoint(37.6, 0),
+  6: layoutPoint(-12.1, 33.75),
+  7: layoutPoint(12.1, 33.75),
+  8: layoutPoint(-36.85, -10.3),
+  9: layoutPoint(-36.85, 10.3),
+  10: layoutPoint(12.1, -33.75),
+  11: layoutPoint(-12.1, -33.75),
+  12: layoutPoint(36.85, 10.3),
+  13: layoutPoint(36.85, -10.3),
+  14: layoutPoint(0, 30.95),
+  15: layoutPoint(-31.25, 0),
+  16: layoutPoint(0, -30.95),
+  17: layoutPoint(31.25, 0),
+  18: layoutPoint(0, 24.85),
+  19: layoutPoint(-25.4, 0),
+  20: layoutPoint(0, -24.85),
+  21: layoutPoint(25.4, 0),
+  22: layoutPoint(-13.45, 12.85),
+  23: layoutPoint(-13.45, -12.85),
+  24: layoutPoint(13.45, -12.85),
+  25: layoutPoint(13.45, 12.85),
+  26: layoutPoint(0, 19),
+  27: layoutPoint(-19.3, 0),
+  28: layoutPoint(0, -19),
+  29: layoutPoint(19.3, 0),
+  30: layoutPoint(-9.4, 9.25),
+  31: layoutPoint(-9.4, -9.25),
+  32: layoutPoint(9.4, -9.25),
+  33: layoutPoint(9.4, 9.25),
+  34: layoutPoint(0, 12.4),
+  35: layoutPoint(0, -12.4),
+  36: layoutPoint(-12.8, 0),
+  37: layoutPoint(12.8, 0),
 };
 
 const circleLabels = {
