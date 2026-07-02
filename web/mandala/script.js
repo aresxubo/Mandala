@@ -270,10 +270,10 @@ function overviewSize(item) {
 
 function overviewOffset(id) {
   const offsets = {
-    22: { x: -4.64, y: 4.16 },
-    23: { x: -4.64, y: -4.16 },
-    24: { x: 4.64, y: -4.16 },
-    25: { x: 4.64, y: 4.16 },
+    22: { x: -3.71, y: 3.33 },
+    23: { x: -3.71, y: -3.33 },
+    24: { x: 3.71, y: -3.33 },
+    25: { x: 3.71, y: 3.33 },
   };
   return offsets[id] || { x: 0, y: 0 };
 }

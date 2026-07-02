@@ -286,7 +286,7 @@ body {
 .stage.is-overview .generated-background,
 .stage.is-overview .mandala-svg,
 .stage.is-overview .overview-layer {
-  transform: scale(1.16);
+  transform: scale(1.276);
   transform-origin: 50% 50%;
 }
 
