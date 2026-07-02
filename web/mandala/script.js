@@ -172,6 +172,8 @@ const statusToast = document.querySelector("#statusToast");
 const statusIcon = document.querySelector("#statusIcon");
 const statusTitle = document.querySelector("#statusTitle");
 const statusMeta = document.querySelector("#statusMeta");
+const timeToast = document.querySelector("#timeToast");
+const timeTitle = document.querySelector("#timeTitle");
 const vectorItemNodes = new Map();
 const imageCache = new Map();
 const narrationAudio = new Audio();
@@ -596,13 +598,10 @@ function showPauseStatus(meta = "空格继续") {
 }
 
 function showTimeStatus() {
-  showStatus({
-    icon: "秒",
-    title: `间隔 ${formatSeconds(durationSeconds)} 秒`,
-    meta: "右侧滑动 / ↑↓",
-    timeout: 1150,
-    type: "time",
-  });
+  timeTitle.textContent = `间隔 ${formatSeconds(durationSeconds)} 秒`;
+  timeToast.classList.remove("is-bumped");
+  void timeToast.offsetWidth;
+  timeToast.classList.add("is-bumped");
 }
 
 function stagePoint(pos) {
@@ -1085,6 +1084,7 @@ preloadDetailImages();
 renderMandala();
 renderOverviewLayer();
 showPauseStatus("双击/空格开始");
+showTimeStatus();
 overviewToggle.addEventListener("click", toggleOverviewMode);
 window.addEventListener("pointerdown", beginPointer, { passive: false });
 window.addEventListener("pointermove", movePointer, { passive: false });

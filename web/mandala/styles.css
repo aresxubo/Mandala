@@ -312,13 +312,10 @@ body {
   object-fit: cover;
   object-position: center;
   overflow: hidden;
-  border: max(1px, 0.18vw) solid rgba(246, 219, 139, 0.84);
+  border: max(2px, 0.24vw) solid rgba(255, 247, 224, 0.96);
   border-radius: 50%;
   background: rgba(246, 239, 217, 0.9);
-  box-shadow:
-    0 0 0 max(3px, 0.45vw) rgba(53, 35, 18, 0.42),
-    0 0 0 max(4px, 0.56vw) rgba(239, 196, 97, 0.22),
-    inset 0 0 12px rgba(99, 52, 21, 0.1);
+  box-shadow: inset 0 0 12px rgba(99, 52, 21, 0.08);
 }
 
 .overview-item--goddess {
@@ -546,6 +543,20 @@ body {
   }
 }
 
+@keyframes timeStatusBump {
+  0% {
+    filter: brightness(1);
+  }
+
+  42% {
+    filter: brightness(1.28);
+  }
+
+  100% {
+    filter: brightness(1);
+  }
+}
+
 .detail {
   position: fixed;
   left: 50%;
@@ -702,6 +713,10 @@ body {
 
 .status-toast--time.is-visible {
   transform: translate(0, -50%) scale(1);
+}
+
+.status-toast--time.is-bumped {
+  animation: timeStatusBump 0.34s ease;
 }
 
 .status-toast__icon {
